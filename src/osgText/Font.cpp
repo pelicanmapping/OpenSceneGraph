@@ -375,6 +375,8 @@ void Font::setThreadSafeRefUnref(bool threadSafe)
 {
    osg::Object::setThreadSafeRefUnref(threadSafe);
 
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_glyphTextureListMutex);
+
     for(GlyphTextureList::const_iterator itr=_glyphTextureList.begin();
         itr!=_glyphTextureList.end();
         ++itr)
@@ -391,6 +393,8 @@ void Font::resizeGLObjectBuffers(unsigned int maxSize)
     {
         (*itr)->resizeGLObjectBuffers(maxSize);
     }
+    
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_glyphTextureListMutex);
 
     for(GlyphTextureList::const_iterator itr=_glyphTextureList.begin();
         itr!=_glyphTextureList.end();
@@ -408,6 +412,8 @@ void Font::releaseGLObjects(osg::State* state) const
     {
         (*itr)->releaseGLObjects(state);
     }
+    
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_glyphTextureListMutex);
 
     for(GlyphTextureList::const_iterator itr=_glyphTextureList.begin();
         itr!=_glyphTextureList.end();
@@ -444,6 +450,8 @@ void Font::addGlyph(const FontResolution& fontRes, unsigned int charcode, Glyph*
 
 void Font::assignGlyphToGlyphTexture(Glyph* glyph, ShaderTechnique shaderTechnique)
 {
+    OpenThreads::ScopedLock<OpenThreads::Mutex> lock(_glyphTextureListMutex);
+
     int posX=0,posY=0;
 
     GlyphTexture* glyphTexture = 0;

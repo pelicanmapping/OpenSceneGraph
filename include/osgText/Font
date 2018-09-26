@@ -172,6 +172,7 @@ protected:
     typedef std::map< FontResolution, Glyph3DMap >          FontSizeGlyph3DMap;
 
     mutable OpenThreads::Mutex      _glyphMapMutex;
+    mutable OpenThreads::Mutex      _glyphTextureListMutex;
 
     StateSets                       _statesets;
     FontSizeGlyphMap                _sizeGlyphMap;
